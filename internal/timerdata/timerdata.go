@@ -2,6 +2,11 @@ package timerdata
 
 import "time"
 
+// TODO: How to handle:
+// - Start
+// - Stop
+// - Pause (Find the amount of duration elapsed, and keep that?)
+// - Delete (e.g. garbage collection / channel closing)
 type TimerData struct {
 	Name      string
 	StartTime time.Time
