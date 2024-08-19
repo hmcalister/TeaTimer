@@ -9,3 +9,14 @@ type TimerData struct {
 	Repeat    bool
 }
 
+func NewTimer() *TimerData {
+	return nil
+}
+
+func (t *TimerData) StartTimer() {
+
+}
+
+func (t *TimerData) StopTimer() {
+
+}
