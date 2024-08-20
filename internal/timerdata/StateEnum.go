@@ -25,3 +25,34 @@ const (
 	TimerStateFinished TimerStateEnum = iota
 )
 
+// Enumerate the messages that can be sent to a timer.
+//
+//go:generate stringer -type=TimerUpdateMessageEnum
+type TimerUpdateMessageEnum int
+
+const (
+	// A message to pause the timer.
+	// This message is only valid for a timer in state TimerStateRunning,
+	// and sends the timer to TimerStatePaused.
+	// All other states will ignore this message.
+	UpdateMessagePause TimerUpdateMessageEnum = iota
+
+	// A message to unpause the timer.
+	// This message is only valid for a timer in state TimerStatePaused,
+	// and sends the timer to TimerStateRunning.
+	UpdateMessageUnpause TimerUpdateMessageEnum = iota
+
+	// A message to stop the timer.
+	// This message is valid for timers in states TimerStateRunning,
+	// TimerStatePaused, or TimerStateRinging.
+	// Sends timer to TimerStateFinished.
+	UpdateMessageStop TimerUpdateMessageEnum = iota
+
+	// A message to restart the timer.
+	// This message is valid for timers in state TimerStateFinished.
+	// Sends timers to state TimerStateRunning, with a refreshed remaining duration.
+	UpdateMessageRestart TimerUpdateMessageEnum = iota
+
+	// A single tick event, decrements the remaining duration by one.
+	UpdateMessageTick TimerUpdateMessageEnum = iota
+)
