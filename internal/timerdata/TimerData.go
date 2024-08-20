@@ -25,6 +25,7 @@ func NewTimer(name string, duration int) *TimerData {
 		UpdateChannel:     updateChannel,
 	}
 
+	go t.stateMachine()
 
 	return t
 }
