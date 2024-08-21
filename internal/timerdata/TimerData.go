@@ -1,9 +1,5 @@
 package timerdata
 
-import (
-	"fmt"
-)
-
 type TimerData struct {
 	Name              string
 	TimerState        TimerStateEnum
@@ -59,12 +55,9 @@ func (t *TimerData) stateMachine() {
 			t.TimerState = TimerStateRunning
 
 		case UpdateMessageTick:
-			fmt.Printf("%v CONSUMED\n", t.Name)
 			if t.TimerState == TimerStateRunning {
 				t.RemainingDuration -= 1
-				fmt.Printf("\tDURATION: %v\n", t.RemainingDuration)
 				if t.RemainingDuration <= 0 {
-					fmt.Printf("\tRINGING\n")
 					t.TimerState = TimerStateRinging
 					t.RemainingDuration = 0
 				}
@@ -73,5 +66,4 @@ func (t *TimerData) stateMachine() {
 	} // End Infinite Loop
 
 	t.TimerState = TimerStateFinished
-	fmt.Printf("%v CLOSED\n", t.Name)
 }
