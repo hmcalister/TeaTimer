@@ -34,6 +34,9 @@ func NewTimer(name string, duration int) *TimerData {
 //
 // Once the timer is deleted, this method cleans up any remaining channels.
 func (t *TimerData) stateMachine() {
+// Takes a channel that is closed on starting, to signal that this timer has started processing states.
+func (t *TimerData) stateMachine(startSignal chan interface{}) {
+	close(startSignal)
 	for updateMessage := range t.UpdateChannel {
 		switch updateMessage {
 		case UpdateMessagePause:
