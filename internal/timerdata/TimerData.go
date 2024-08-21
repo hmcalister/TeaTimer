@@ -8,24 +8,6 @@ type TimerData struct {
 	UpdateChannel     chan TimerUpdateMessageEnum
 }
 
-// Creates and returns a new Timer.
-//
-// When finished with the timer, close the update channel to signal cleanup.
-func NewTimer(name string, duration int) *TimerData {
-	updateChannel := make(chan TimerUpdateMessageEnum)
-	t := &TimerData{
-		Name:              name,
-		TimerState:        TimerStateRunning,
-		InitialDuration:   duration,
-		RemainingDuration: duration,
-		UpdateChannel:     updateChannel,
-	}
-
-	go t.stateMachine()
-
-	return t
-}
-
 // Function to run concurrently, as `go t.stateMachine`.
 //
 // Handles all incoming messages, as well as ticking the timer duration as required.
