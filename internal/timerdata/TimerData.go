@@ -32,8 +32,6 @@ func NewTimer(name string, duration int) *TimerData {
 // Concurrent reads shouldn't (?) be an issue here, as being out of sync by one second
 // likely won't be an issue... but could introduce locks later if need be.
 //
-// Once the timer is deleted, this method cleans up any remaining channels.
-func (t *TimerData) stateMachine() {
 // Takes a channel that is closed on starting, to signal that this timer has started processing states.
 func (t *TimerData) stateMachine(startSignal chan interface{}) {
 	close(startSignal)
