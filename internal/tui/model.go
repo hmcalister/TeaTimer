@@ -84,9 +84,25 @@ func (m MainModel) View() string {
 
 	progressBar := progress.New(progress.WithDefaultGradient())
 	progressBar.ShowPercentage = false
+	progressBar.Width = progressBarStyle.GetWidth()
+	timerVisuals := make([]string, 0)
 	linkedlist.ForwardApply(m.timerManager.AllTimers, func(timer *timerdata.TimerData) {
-		renderString += timer.Name + ": " + progressBar.ViewAs(timer.GetProgressProportion()) + " " + timer.GetRemainingDurationAsString() + "\n\n"
+		timerVisuals = append(timerVisuals, lipgloss.JoinVertical(
+			lipgloss.Left,
+			lipgloss.JoinHorizontal(
+				lipgloss.Center,
+				timer.Name,
+				": ",
+				timer.GetStatusAsString(),
+			),
+			lipgloss.JoinHorizontal(
+				lipgloss.Center,
+				progressBar.ViewAs(timer.GetProgressProportion()),
+			),
+			"\n",
+		))
 	})
+	renderString += lipgloss.JoinVertical(lipgloss.Left, timerVisuals...)
 
 	if m.addTimerPopupActive {
 		form := lipgloss.JoinVertical(
