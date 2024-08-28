@@ -90,4 +90,21 @@ func (m MainModel) View() string {
 		renderString += timer.Name + ": " + progressBar.ViewAs(timer.GetProgressProportion()) + " " + timer.GetRemainingDurationAsString() + "\n\n"
 	})
 
+	if m.addTimerPopupActive {
+		form := lipgloss.JoinVertical(
+			lipgloss.Left,
+			lipgloss.JoinHorizontal(
+				lipgloss.Bottom,
+				formLabelStyle.Render("Timer Name: "),
+				formInputStyle.Render("..."),
+			),
+			lipgloss.JoinHorizontal(
+				lipgloss.Top,
+				formLabelStyle.Render("Timer Duration (s): "),
+				formInputStyle.Render("..."),
+			),
+		)
+		renderString += lipgloss.Place(popupContent.GetWidth(), popupContent.GetHeight(), lipgloss.Center, lipgloss.Center, popupContent.Render(form))
+	}
+	return mainContent.Render(renderString)
 }
