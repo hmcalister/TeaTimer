@@ -1,16 +1,16 @@
 package tui
 
 import (
+	"time"
+
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/list"
+	"github.com/charmbracelet/bubbles/progress"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	linkedlist "github.com/hmcalister/Go-DSA/list/LinkedList"
 	"github.com/hmcalister/TeaTimer/internal/timerdata"
 )
 
-var (
-	appStyle = lipgloss.NewStyle().Margin(1, 2)
-)
 
 type MainModel struct {
 	keybindings  *keybindList
