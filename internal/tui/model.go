@@ -11,6 +11,7 @@ import (
 	"github.com/hmcalister/TeaTimer/internal/timerdata"
 )
 
+type tickMsg time.Time
 
 type MainModel struct {
 	keybindings  *keybindList
@@ -35,6 +36,12 @@ func NewMainModel() MainModel {
 		timersList:   timersList,
 		timerManager: timerdata.NewManager(),
 	}
+}
+
+func tickCmd() tea.Cmd {
+	return tea.Tick(500*time.Millisecond, func(t time.Time) tea.Msg {
+		return tickMsg(t)
+	})
 }
 
 func (m MainModel) Init() tea.Cmd {
