@@ -49,8 +49,16 @@ func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, m.keybindings.quit):
+		case key.Matches(msg, m.keybindings.exit):
 			return m, tea.Quit
+
+		case key.Matches(msg, m.keybindings.quit):
+			if m.addTimerPopupActive {
+				m.addTimerPopupActive = false
+				return m, tickCmd()
+			} else {
+				return m, tea.Quit
+			}
 
 		case key.Matches(msg, m.keybindings.suspend):
 			return m, tea.Suspend
