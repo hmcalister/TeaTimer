@@ -21,20 +21,12 @@ type MainModel struct {
 
 func NewMainModel() MainModel {
 	keybinds := newKeybindList()
-	allKeybinds := func() []key.Binding {
-		return []key.Binding{
-			keybinds.add,
-			keybinds.suspend,
-			// keybinds.quit,
-		}
-	}
-	timersList := list.New(make([]list.Item, 0), list.NewDefaultDelegate(), 0, 0)
-	timersList.AdditionalShortHelpKeys = allKeybinds
-	timersList.AdditionalFullHelpKeys = allKeybinds
+
+	timerManager := timerdata.NewManager()
+	timerManager.NewTimer("A", 60)
 	return MainModel{
 		keybindings:  keybinds,
-		timersList:   timersList,
-		timerManager: timerdata.NewManager(),
+		timerManager: timerManager,
 	}
 }
 
