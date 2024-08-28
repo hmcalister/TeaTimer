@@ -1,11 +1,20 @@
 package timerdata
 
+import (
+	"fmt"
+	"time"
+)
+
 type TimerData struct {
 	Name              string
 	TimerState        TimerStateEnum
 	InitialDuration   int
 	RemainingDuration int
 	UpdateChannel     chan TimerUpdateMessageEnum
+}
+
+func (t *TimerData) GetProgressProportion() float64 {
+	return 1 - float64(t.RemainingDuration)/float64(t.InitialDuration)
 }
 
 // Function to run concurrently, as `go t.stateMachine`.
