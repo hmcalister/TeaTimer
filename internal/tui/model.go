@@ -50,6 +50,8 @@ func (m MainModel) Init() tea.Cmd {
 
 func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tickMsg:
+		return m, tickCmd()
 	case tea.WindowSizeMsg:
 		h, v := appStyle.GetFrameSize()
 		m.timersList.SetSize(msg.Width-h, msg.Height-v)
