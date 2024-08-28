@@ -45,7 +45,7 @@ func tickCmd() tea.Cmd {
 }
 
 func (m MainModel) Init() tea.Cmd {
-	return nil
+	return tickCmd()
 }
 
 func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
