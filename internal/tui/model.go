@@ -107,18 +107,27 @@ func (m MainModel) View() string {
 	if m.addTimerPopupActive {
 		form := lipgloss.JoinVertical(
 			lipgloss.Left,
+			"Add New Timer",
+			fmt.Sprintf("%d %d", mainContentStyle.GetWidth(), mainContentStyle.GetHeight()),
+			fmt.Sprintf("%d %d", popupContentStyle.GetWidth(), popupContentStyle.GetHeight()),
 			lipgloss.JoinHorizontal(
-				lipgloss.Bottom,
+				lipgloss.Center,
 				formLabelStyle.Render("Timer Name: "),
 				formInputStyle.Render("..."),
 			),
 			lipgloss.JoinHorizontal(
-				lipgloss.Top,
+				lipgloss.Center,
 				formLabelStyle.Render("Timer Duration (s): "),
 				formInputStyle.Render("..."),
 			),
 		)
-		renderString += lipgloss.Place(popupContent.GetWidth(), popupContent.GetHeight(), lipgloss.Center, lipgloss.Center, popupContent.Render(form))
+		renderString += lipgloss.Place(
+			mainContentStyle.GetWidth(),
+			mainContentStyle.GetHeight(),
+			lipgloss.Center,
+			lipgloss.Center,
+			popupContentStyle.Render(form),
+		)
 	}
-	return mainContent.Render(renderString)
+	return mainContentStyle.Render(renderString)
 }
