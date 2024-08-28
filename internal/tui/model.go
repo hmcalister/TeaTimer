@@ -81,7 +81,8 @@ func (m MainModel) View() string {
 	defer m.timerManager.AllTimersMutex.RUnlock()
 
 	renderString := "TIMER APP\n\n"
-	progressBar := progress.New()
+
+	progressBar := progress.New(progress.WithDefaultGradient())
 	progressBar.ShowPercentage = false
 	linkedlist.ForwardApply(m.timerManager.AllTimers, func(timer *timerdata.TimerData) {
 		renderString += timer.Name + ": " + progressBar.ViewAs(timer.GetProgressProportion()) + " " + timer.GetRemainingDurationAsString() + "\n\n"
