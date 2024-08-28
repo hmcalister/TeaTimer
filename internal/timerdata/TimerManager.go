@@ -8,25 +8,25 @@ import (
 )
 
 type TimerManager struct {
-	allTimersMutex sync.RWMutex
-	allTimers      *linkedlist.LinkedList[*TimerData]
+	AllTimersMutex sync.RWMutex
+	AllTimers      *linkedlist.LinkedList[*TimerData]
 
 	globalTicker *time.Ticker
 }
 
 func NewManager() *TimerManager {
 	manager := &TimerManager{
-		allTimers:    linkedlist.New[*TimerData](),
+		AllTimers:    linkedlist.New[*TimerData](),
 		globalTicker: time.NewTicker(time.Second),
 	}
 
 	go func() {
 		for range manager.globalTicker.C {
-			manager.allTimersMutex.RLock()
-			go linkedlist.ForwardApply(manager.allTimers, func(item *TimerData) {
+			manager.AllTimersMutex.RLock()
+			go linkedlist.ForwardApply(manager.AllTimers, func(item *TimerData) {
 				item.UpdateChannel <- UpdateMessageTick
 			})
-			manager.allTimersMutex.RUnlock()
+			manager.AllTimersMutex.RUnlock()
 		}
 	}()
 
@@ -52,7 +52,7 @@ func (manager *TimerManager) NewTimer(name string, duration int) {
 
 	// Now timer has started processing events, we can add it to the timer list
 
-	manager.allTimersMutex.Lock()
-	manager.allTimers.Add(t)
-	manager.allTimersMutex.Unlock()
+	manager.AllTimersMutex.Lock()
+	manager.AllTimers.Add(t)
+	manager.AllTimersMutex.Unlock()
 }
