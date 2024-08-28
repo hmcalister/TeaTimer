@@ -47,10 +47,13 @@ func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tickMsg:
 		return m, tickCmd()
 	case tea.WindowSizeMsg:
-		h, v := mainContent.GetFrameSize()
-		mainContent = mainContent.Width(msg.Width - h).Height(msg.Height - v)
-		h, v = popupContent.GetFrameSize()
-		popupContent = popupContent.Width(msg.Width/2 - h).Height(msg.Height/2 - v)
+		h, v := mainContentStyle.GetFrameSize()
+		mainContentStyle = mainContentStyle.Width(max(msg.Width-h, contentMinWidth)).Height(max(msg.Height-v, contentMinHeight))
+		progressBarStyle = progressBarStyle.Width(mainContentStyle.GetWidth() - h)
+		h, v = popupContentStyle.GetFrameSize()
+		popupContentStyle = popupContentStyle.Width(max(msg.Width/2-h, contentMinWidth)).Height(max(msg.Height/2-2*v, contentMinHeight))
+		formLabelStyle = formLabelStyle.Width(popupContentStyle.GetWidth()/3 - h)
+		formInputStyle = formInputStyle.Width(2*popupContentStyle.GetWidth()/3 - h)
 
 	case tea.KeyMsg:
 		switch {
