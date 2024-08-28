@@ -14,9 +14,9 @@ import (
 type tickMsg time.Time
 
 type MainModel struct {
-	keybindings  *keybindList
-	timersList   list.Model
-	timerManager *timerdata.TimerManager
+	keybindings         *keybindList
+	timerManager        *timerdata.TimerManager
+	addTimerPopupActive bool
 }
 
 func NewMainModel() MainModel {
