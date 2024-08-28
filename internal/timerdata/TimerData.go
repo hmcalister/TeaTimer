@@ -17,6 +17,28 @@ func (t *TimerData) GetProgressProportion() float64 {
 	return 1 - float64(t.RemainingDuration)/float64(t.InitialDuration)
 }
 
+func (t *TimerData) GetRemainingDurationAsString() string {
+	remainingDuration := time.Duration(t.RemainingDuration) * time.Second
+	days := int(remainingDuration.Hours()) / 24
+	hours := int(remainingDuration.Hours()) % 24
+	minutes := int(remainingDuration.Minutes()) % 60
+	seconds := int(remainingDuration.Seconds()) % 60
+
+	if days > 0 {
+		return fmt.Sprintf("%d Days %d Hours %d Minutes %d Seconds", days, hours, minutes, seconds)
+	}
+	if hours > 0 {
+		return fmt.Sprintf("%d Hours %d Minutes %d Seconds", hours, minutes, seconds)
+	}
+	if minutes > 0 {
+		return fmt.Sprintf("%d Minutes %d Seconds", minutes, seconds)
+	}
+	if seconds > 0 {
+		return fmt.Sprintf("%d Seconds", seconds)
+	}
+	return ""
+}
+
 // Function to run concurrently, as `go t.stateMachine`.
 //
 // Handles all incoming messages, as well as ticking the timer duration as required.
