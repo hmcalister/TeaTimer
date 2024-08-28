@@ -41,12 +41,16 @@ func (m MainModel) Init() tea.Cmd {
 }
 
 func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var batchedCmds []tea.Cmd
+
 	switch msg := msg.(type) {
 	case tickMsg:
 		return m, tickCmd()
 	case tea.WindowSizeMsg:
-		h, v := appStyle.GetFrameSize()
-		m.timersList.SetSize(msg.Width-h, msg.Height-v)
+		h, v := mainContent.GetFrameSize()
+		mainContent = mainContent.Width(msg.Width - h).Height(msg.Height - v)
+		h, v = popupContent.GetFrameSize()
+		popupContent = popupContent.Width(msg.Width/2 - h).Height(msg.Height/2 - v)
 
 	case tea.KeyMsg:
 		switch {
@@ -65,14 +69,14 @@ func (m MainModel) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Suspend
 
 		case key.Matches(msg, m.keybindings.add):
+			if !m.addTimerPopupActive {
+				m.addTimerPopupActive = true
+			}
 			return m, nil
 		}
 	}
 
-	var cmd tea.Cmd
-	m.timersList, cmd = m.timersList.Update(msg)
-
-	return m, cmd
+	return m, tea.Batch(batchedCmds...)
 }
 
 func (m MainModel) View() string {
