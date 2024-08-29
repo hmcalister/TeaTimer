@@ -1,6 +1,8 @@
 package tui
 
 import (
+	"slices"
+
 	"github.com/charmbracelet/bubbles/progress"
 	"github.com/charmbracelet/lipgloss"
 	linkedlist "github.com/hmcalister/Go-DSA/list/LinkedList"
@@ -42,18 +44,22 @@ func (m AppModel) renderAddTimerPage() string {
 
 	titleContent := titleContentStyle.Render("ADD TIMER")
 
+	formInputFocused := formInputStyle.Foreground(lipgloss.Color("205"))
+	formInputBlurred := formInputStyle.Foreground(lipgloss.Color("240"))
+	formInputStyles := slices.Repeat([]lipgloss.Style{formInputBlurred}, len(m.addTimerInputs))
+	formInputStyles[m.focusIndex] = formInputFocused
 	mainContent := lipgloss.JoinVertical(
 		lipgloss.Left,
 		lipgloss.JoinVertical(
 			lipgloss.Center,
 			formLabelStyle.Render("Timer Name: "),
-			formInputStyle.Render("..."),
+			formInputStyles[0].Render(m.addTimerInputs[0].View()),
 		),
 		"\n",
 		lipgloss.JoinVertical(
 			lipgloss.Center,
 			formLabelStyle.Render("Timer Duration (s): "),
-			formInputStyle.Render("..."),
+			formInputStyles[1].Render(m.addTimerInputs[1].View()),
 		),
 		"\n",
 	)
